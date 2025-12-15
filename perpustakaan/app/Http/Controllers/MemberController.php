@@ -21,7 +21,7 @@ class MemberController extends Controller
     public function store(Request $request)
     {
         Member::create($request->all());
-        return redirect('/members');
+        return redirect('/members')->with('success', 'Member berhasil ditambahkan');
     }
 
     public function edit(Member $member)
@@ -32,12 +32,13 @@ class MemberController extends Controller
     public function update(Request $request, Member $member)
     {
         $member->update($request->all());
-        return redirect('/members');
+        return redirect('/members')->with('success', 'Member berhasil diupdate');
     }
 
+    // 🔥 AKSI DELETE
     public function destroy(Member $member)
     {
         $member->delete();
-        return redirect('/members');
+        return redirect('/members')->with('success', 'Member berhasil dihapus');
     }
 }

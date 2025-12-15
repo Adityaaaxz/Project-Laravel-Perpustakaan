@@ -6,19 +6,47 @@ use App\Http\Controllers\MemberController;
 use App\Http\Controllers\BorrowingController;
 use App\Http\Controllers\DashboardController;
 
-// DASHBOARD
-Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+/*
+|--------------------------------------------------------------------------
+| DASHBOARD
+|--------------------------------------------------------------------------
+*/
+Route::get('/', [DashboardController::class, 'index'])
+    ->name('dashboard');
 
-// BOOKS
+/*
+|--------------------------------------------------------------------------
+| BOOKS
+|--------------------------------------------------------------------------
+*/
 Route::resource('books', BookController::class);
 
-// MEMBERS
+/*
+|--------------------------------------------------------------------------
+| MEMBERS
+|--------------------------------------------------------------------------
+*/
 Route::resource('members', MemberController::class);
 
-// BORROWINGS
-Route::get('/borrowings', [BorrowingController::class, 'index']);
-Route::get('/borrowings/create', [BorrowingController::class, 'create']);
-Route::post('/borrowings', [BorrowingController::class, 'store']);
-Route::put('/borrowings/{borrowing}/kembali', [BorrowingController::class, 'kembali']);
+/*
+|--------------------------------------------------------------------------
+| BORROWINGS
+|--------------------------------------------------------------------------
+*/
+Route::resource('borrowings', BorrowingController::class)
+    ->except(['show', 'edit', 'update']); 
+// karena peminjaman gak perlu edit manual
 
-Route::get('/laporan/peminjaman', [BorrowingController::class, 'laporan']);
+// aksi khusus pengembalian buku
+Route::put('/borrowings/{borrowing}/kembali', 
+    [BorrowingController::class, 'kembali']
+)->name('borrowings.kembali');
+
+/*
+|--------------------------------------------------------------------------
+| LAPORAN
+|--------------------------------------------------------------------------
+*/
+Route::get('/laporan/peminjaman',
+    [BorrowingController::class, 'laporan']
+)->name('laporan.peminjaman');
